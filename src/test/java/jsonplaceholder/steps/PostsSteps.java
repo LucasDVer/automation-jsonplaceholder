@@ -136,7 +136,7 @@ public class PostsSteps {
         response = RestAssured.given().get(path);
     }
 
-    @Then("The user expects the correct status code.")
+    @Then("The response returns the correct status code.")
     public void theStatusCodeShouldBeTheCorrectOne(){
         Assert.assertEquals("The status code is not the correct one.",jsonData.get("statusCode").getAsInt()
                                                                              , response.statusCode());
@@ -149,25 +149,25 @@ public class PostsSteps {
 
     }
 
-    @And("The user expects the correct user id.")
+    @And("The response returns the correct user id.")
     public void theUserIdOfPostShouldBeTheCorrectOne(){
         Assert.assertEquals("The user id is not the correct one", jsonData.get("userId").getAsInt()
                                                                         , response.jsonPath().getInt("userId"));
     }
 
-    @And("The user expects the correct id.")
+    @And("The response returns the correct id.")
     public void theIdOfPostShouldBeTheCorrectOne(){
         Assert.assertEquals("The user id is not the correct one", jsonData.get("id").getAsInt()
                 , response.jsonPath().getInt("id"));
     }
 
-    @And("The user expects the correct title.")
+    @And("The response returns the correct title.")
     public void theTitleOfPostShouldBeTheCorrectOne(){
         Assert.assertEquals("The title is not the correct one.", jsonData.get("title").getAsString()
                                                                        , response.jsonPath().getString("title"));
     }
 
-    @And("The user expects the correct body.")
+    @And("The response returns the correct body.")
     public void theBodyOfThePostShouldBeTheCorrectOne(){
         Assert.assertEquals("The body is no the correct one", jsonData.get("body").getAsString()
                                                                      , response.jsonPath().getString("body"));
