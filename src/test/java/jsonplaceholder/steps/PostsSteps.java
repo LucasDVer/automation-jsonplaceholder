@@ -32,29 +32,47 @@ public class PostsSteps {
 
     private static final String getNestedInformation = postsInformationById + "/comments";
 
+    private static final String getEndpoint = "get";
+
+    private static final String getAllEndpoint = "getAll";
+
+    private static final String postEndpoint = "post";
+
+    private static final String putEndpoint = "put";
+
+    private static final String patchEndpoint = "patch";
+
+    private static final String deleteEndpoint = "delete";
+
+    private static final String getCommentsByPostIdEndpoint = "getCommentsByPostId";
+
+    private static final String queryGetByUserIdEndpoint = "queryGetByUserId";
+
+    private static final String queryGetByTitleEndpoint = "queryGetByTitle";
+
     @Given("The user has access to the JsonPlaceholder endpoint.")
     public void theUserAccessToTheJsonPlaceholderEndpoint(){
         System.out.println("This API doesn't need any authentication.");
     }
 
-    @When("The user performs a get request {string} to obtain all the posts.")
-    public void theUserPerformsAGetRequestToObtainAllThePosts(String requestName){
-        jsonData = FileUtils.getStringFromJsonFile(jsonDataPath, requestName);
+    @When("The user performs a get request to obtain all the posts.")
+    public void theUserPerformsAGetRequestToObtainAllThePosts(){
+        jsonData = FileUtils.getStringFromJsonFile(jsonDataPath, getAllEndpoint);
         response = RestAssured.given().get(postsInformation);
     }
 
-    @When("The user performs a get request {string} to obtain a post by Id.")
-    public void theUserPerformsAGetRequestToObtainAPostById(String requestName){
-        jsonData = FileUtils.getStringFromJsonFile(jsonDataPath, requestName);
+    @When("The user performs a get request to obtain a post by Id.")
+    public void theUserPerformsAGetRequestToObtainAPostById(){
+        jsonData = FileUtils.getStringFromJsonFile(jsonDataPath, getEndpoint);
         String path = String.format(postsInformationById, jsonData.get("id"));
         response = RestAssured.given().get(path);
     }
 
-    @When("The user performs a post request {string} to create a new post.")
-    public void theUserPerformsAPostRequestToCreateAPost(String requestName){
-        jsonData = FileUtils.getStringFromJsonFile(jsonDataPath, requestName);
+    @When("The user performs a post request to create a new post.")
+    public void theUserPerformsAPostRequestToCreateAPost(){
+        jsonData = FileUtils.getStringFromJsonFile(jsonDataPath, postEndpoint);
         response = RestAssured.given().header("Content-Type", "application/json")
-                .body(FileUtils.getStringFromJsonFileWithoutStatusCode(jsonDataPath,requestName))
+                .body(FileUtils.getStringFromJsonFileWithoutStatusCode(jsonDataPath,postEndpoint))
                 .when()
                 .post(postsInformation)
                 .then()
@@ -62,12 +80,12 @@ public class PostsSteps {
                 .response();
     }
 
-    @When("The user performs a put request {string} to update a post.")
-    public void theUserPerformsAPutRequestToUpdateAPost(String requestName){
-        jsonData = FileUtils.getStringFromJsonFile(jsonDataPath, requestName);
+    @When("The user performs a put request to update a post.")
+    public void theUserPerformsAPutRequestToUpdateAPost(){
+        jsonData = FileUtils.getStringFromJsonFile(jsonDataPath, putEndpoint);
         String path = String.format(postsInformationById, jsonData.get("id"));
         response = RestAssured.given().header("Content-Type", "application/json")
-                .body(FileUtils.getStringFromJsonFileWithoutStatusCode(jsonDataPath,requestName))
+                .body(FileUtils.getStringFromJsonFileWithoutStatusCode(jsonDataPath,putEndpoint))
                 .when()
                 .put(path)
                 .then()
@@ -75,12 +93,12 @@ public class PostsSteps {
                 .response();
     }
 
-    @When("The user performs a patch request {string} to update a post.")
-    public void theUserPerformsAPatchRequestToUpdateAPost(String requestName){
-        jsonData = FileUtils.getStringFromJsonFile(jsonDataPath, requestName);
+    @When("The user performs a patch request to update a post.")
+    public void theUserPerformsAPatchRequestToUpdateAPost(){
+        jsonData = FileUtils.getStringFromJsonFile(jsonDataPath, patchEndpoint);
         String path = String.format(postsInformationById, jsonData.get("id"));
         response = RestAssured.given().header("Content-Type", "application/json")
-                .body(FileUtils.getStringFromJsonFileWithoutStatusCode(jsonDataPath,requestName))
+                .body(FileUtils.getStringFromJsonFileWithoutStatusCode(jsonDataPath,patchEndpoint))
                 .when()
                 .patch(path)
                 .then()
@@ -88,31 +106,33 @@ public class PostsSteps {
                 .response();
     }
 
-    @When("The user performs a delete request {string} to delete a post.")
-    public void theUserPerformsADeleteRequestToDeleteAPost(String requestName){
-        jsonData = FileUtils.getStringFromJsonFile(jsonDataPath, requestName);
+    @When("The user performs a delete request to delete a post.")
+    public void theUserPerformsADeleteRequestToDeleteAPost(){
+        jsonData = FileUtils.getStringFromJsonFile(jsonDataPath, deleteEndpoint);
         String path = String.format(postsInformationById, jsonData.get("id"));
         response = RestAssured.given().delete(path);
     }
 
-    @When("The user performs a get request {string} to obtain a comment by postId.")
-    public void theUserPerformsAGetRequestToObtainACommentByPostId(String requestName){
-        jsonData = FileUtils.getStringFromJsonFile(jsonDataPath, requestName);
+    @When("The user performs a get request to obtain a comment by postId.")
+    public void theUserPerformsAGetRequestToObtainACommentByPostId(){
+        jsonData = FileUtils.getStringFromJsonFile(jsonDataPath, getCommentsByPostIdEndpoint);
         String path = String.format(getNestedInformation, jsonData.get("id"));
         response = RestAssured.given().get(path);
     }
 
-    @When("The user performs a get request {string} to obtain all the posts by userId.")
-    public void theUserPerformsAGetRequestToObtainAllThePostByUserId(String requestName){
-        jsonData = FileUtils.getStringFromJsonFile(jsonDataPath, requestName);
+    @When("The user performs a get request to obtain all the posts by userId.")
+    public void theUserPerformsAGetRequestToObtainAllThePostByUserId(){
+        jsonData = FileUtils.getStringFromJsonFile(jsonDataPath, queryGetByUserIdEndpoint);
         String path = String.format(getPostsInformationByQuery, "userId=" + jsonData.get("userId"));
         response = RestAssured.given().get(path);
     }
 
-    @When("The user performs a get request {string} to obtain all the posts by title.")
-    public void theUserPerformsAGetRequestToObtainAllThePostByTitle(String requestName){
-        jsonData = FileUtils.getStringFromJsonFile(jsonDataPath, requestName);
-        String path = String.format(getPostsInformationByQuery, "title=" + jsonData.get("title"));
+    @When("The user performs a get request to obtain all the posts by title.")
+    public void theUserPerformsAGetRequestToObtainAllThePostByTitle(){
+        jsonData = FileUtils.getStringFromJsonFile(jsonDataPath, queryGetByTitleEndpoint);
+        String title = "title=" + jsonData.get("title").toString();
+        title = title.replace("\"","");
+        String path = String.format(getPostsInformationByQuery, title);
         response = RestAssured.given().get(path);
     }
 
@@ -122,7 +142,7 @@ public class PostsSteps {
                                                                              , response.statusCode());
     }
 
-    @And("The user expects the correct count.")
+    @And("The response returns the correct count.")
     public void theNumberOfPostsShouldBeTheCorrectOne(){
         Assert.assertEquals("The count post is not the correct one.",jsonData.get("countPosts").getAsInt()
                                                                             , response.as(List.class).size());
