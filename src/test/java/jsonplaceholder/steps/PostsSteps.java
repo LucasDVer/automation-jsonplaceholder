@@ -15,40 +15,40 @@ import java.util.List;
 
 public class PostsSteps {
 
-    private static final String jsonDataPath = "C:/Users/ASUS/Documents/jsonplaceholder data files/PostsDataFile.json";
+    private static final String JSON_DATA_PATH = "C:/Users/ASUS/Documents/jsonplaceholder data files/PostsDataFile.json";
 
     private Response response;
 
     private JsonObject jsonData;
 
     //TODO: This attribute/constant has to be move to a higher class. Thinking about creating an abstract base class.
-    private static final String jsonPlaceholderUrl  = "https://jsonplaceholder.typicode.com/";
+    private static final String JSONPLACEHOLDER_URL = "https://jsonplaceholder.typicode.com/";
 
-    private static final String postsInformation = jsonPlaceholderUrl + "posts";
+    private static final String POST_INFORMATION = JSONPLACEHOLDER_URL + "posts";
 
-    private static String getPostsInformationByQuery = postsInformation + "?%s";
+    private static final String GET_POSTS_INFORMATION_BY_QUERY = POST_INFORMATION + "?%s";
 
-    private static final String postsInformationById = postsInformation + "/%s";
+    private static final String POSTS_INFORMATION_BY_ID = POST_INFORMATION + "/%s";
 
-    private static final String getNestedInformation = postsInformationById + "/comments";
+    private static final String GET_NESTED_INFORMATION = POSTS_INFORMATION_BY_ID + "/comments";
 
-    private static final String getEndpoint = "get";
+    private static final String GET_ENDPOINT = "get";
 
-    private static final String getAllEndpoint = "getAll";
+    private static final String GET_ALL_ENDPOINT = "getAll";
 
-    private static final String postEndpoint = "post";
+    private static final String POST_ENDPOINT = "post";
 
-    private static final String putEndpoint = "put";
+    private static final String PUT_ENDPOINT = "put";
 
-    private static final String patchEndpoint = "patch";
+    private static final String PATCH_ENDPOINT = "patch";
 
-    private static final String deleteEndpoint = "delete";
+    private static final String DELETE_ENDPOINT = "delete";
 
-    private static final String getCommentsByPostIdEndpoint = "getCommentsByPostId";
+    private static final String GET_COMMENTS_BY_POST_ID_ENDPOINT = "getCommentsByPostId";
 
-    private static final String queryGetByUserIdEndpoint = "queryGetByUserId";
+    private static final String QUERY_GET_BY_USER_ID_ENDPOINT = "queryGetByUserId";
 
-    private static final String queryGetByTitleEndpoint = "queryGetByTitle";
+    private static final String QUERY_GET_BY_TITLE_ENDPOINT = "queryGetByTitle";
 
     @Given("The user has access to the JsonPlaceholder endpoint.")
     public void theUserAccessToTheJsonPlaceholderEndpoint(){
@@ -57,24 +57,24 @@ public class PostsSteps {
 
     @When("The user performs a get request to obtain all the posts.")
     public void theUserPerformsAGetRequestToObtainAllThePosts(){
-        jsonData = FileUtils.getStringFromJsonFile(jsonDataPath, getAllEndpoint);
-        response = RestAssured.given().get(postsInformation);
+        jsonData = FileUtils.getStringFromJsonFile(JSON_DATA_PATH, GET_ALL_ENDPOINT);
+        response = RestAssured.given().get(POST_INFORMATION);
     }
 
     @When("The user performs a get request to obtain a post by Id.")
     public void theUserPerformsAGetRequestToObtainAPostById(){
-        jsonData = FileUtils.getStringFromJsonFile(jsonDataPath, getEndpoint);
-        String path = String.format(postsInformationById, jsonData.get("id"));
+        jsonData = FileUtils.getStringFromJsonFile(JSON_DATA_PATH, GET_ENDPOINT);
+        String path = String.format(POSTS_INFORMATION_BY_ID, jsonData.get("id"));
         response = RestAssured.given().get(path);
     }
 
     @When("The user performs a post request to create a new post.")
     public void theUserPerformsAPostRequestToCreateAPost(){
-        jsonData = FileUtils.getStringFromJsonFile(jsonDataPath, postEndpoint);
+        jsonData = FileUtils.getStringFromJsonFile(JSON_DATA_PATH, POST_ENDPOINT);
         response = RestAssured.given().header("Content-Type", "application/json")
-                .body(FileUtils.getStringFromJsonFileWithoutStatusCode(jsonDataPath,postEndpoint))
+                .body(FileUtils.getStringFromJsonFileWithoutStatusCode(JSON_DATA_PATH, POST_ENDPOINT))
                 .when()
-                .post(postsInformation)
+                .post(POST_INFORMATION)
                 .then()
                 .extract()
                 .response();
@@ -82,10 +82,10 @@ public class PostsSteps {
 
     @When("The user performs a put request to update a post.")
     public void theUserPerformsAPutRequestToUpdateAPost(){
-        jsonData = FileUtils.getStringFromJsonFile(jsonDataPath, putEndpoint);
-        String path = String.format(postsInformationById, jsonData.get("id"));
+        jsonData = FileUtils.getStringFromJsonFile(JSON_DATA_PATH, PUT_ENDPOINT);
+        String path = String.format(POSTS_INFORMATION_BY_ID, jsonData.get("id"));
         response = RestAssured.given().header("Content-Type", "application/json")
-                .body(FileUtils.getStringFromJsonFileWithoutStatusCode(jsonDataPath,putEndpoint))
+                .body(FileUtils.getStringFromJsonFileWithoutStatusCode(JSON_DATA_PATH, PUT_ENDPOINT))
                 .when()
                 .put(path)
                 .then()
@@ -95,10 +95,10 @@ public class PostsSteps {
 
     @When("The user performs a patch request to update a post.")
     public void theUserPerformsAPatchRequestToUpdateAPost(){
-        jsonData = FileUtils.getStringFromJsonFile(jsonDataPath, patchEndpoint);
-        String path = String.format(postsInformationById, jsonData.get("id"));
+        jsonData = FileUtils.getStringFromJsonFile(JSON_DATA_PATH, PATCH_ENDPOINT);
+        String path = String.format(POSTS_INFORMATION_BY_ID, jsonData.get("id"));
         response = RestAssured.given().header("Content-Type", "application/json")
-                .body(FileUtils.getStringFromJsonFileWithoutStatusCode(jsonDataPath,patchEndpoint))
+                .body(FileUtils.getStringFromJsonFileWithoutStatusCode(JSON_DATA_PATH, PATCH_ENDPOINT))
                 .when()
                 .patch(path)
                 .then()
@@ -108,31 +108,31 @@ public class PostsSteps {
 
     @When("The user performs a delete request to delete a post.")
     public void theUserPerformsADeleteRequestToDeleteAPost(){
-        jsonData = FileUtils.getStringFromJsonFile(jsonDataPath, deleteEndpoint);
-        String path = String.format(postsInformationById, jsonData.get("id"));
+        jsonData = FileUtils.getStringFromJsonFile(JSON_DATA_PATH, DELETE_ENDPOINT);
+        String path = String.format(POSTS_INFORMATION_BY_ID, jsonData.get("id"));
         response = RestAssured.given().delete(path);
     }
 
     @When("The user performs a get request to obtain a comment by postId.")
     public void theUserPerformsAGetRequestToObtainACommentByPostId(){
-        jsonData = FileUtils.getStringFromJsonFile(jsonDataPath, getCommentsByPostIdEndpoint);
-        String path = String.format(getNestedInformation, jsonData.get("id"));
+        jsonData = FileUtils.getStringFromJsonFile(JSON_DATA_PATH, GET_COMMENTS_BY_POST_ID_ENDPOINT);
+        String path = String.format(GET_NESTED_INFORMATION, jsonData.get("id"));
         response = RestAssured.given().get(path);
     }
 
     @When("The user performs a get request to obtain all the posts by userId.")
     public void theUserPerformsAGetRequestToObtainAllThePostByUserId(){
-        jsonData = FileUtils.getStringFromJsonFile(jsonDataPath, queryGetByUserIdEndpoint);
-        String path = String.format(getPostsInformationByQuery, "userId=" + jsonData.get("userId"));
+        jsonData = FileUtils.getStringFromJsonFile(JSON_DATA_PATH, QUERY_GET_BY_USER_ID_ENDPOINT);
+        String path = String.format(GET_POSTS_INFORMATION_BY_QUERY, "userId=" + jsonData.get("userId"));
         response = RestAssured.given().get(path);
     }
 
     @When("The user performs a get request to obtain all the posts by title.")
     public void theUserPerformsAGetRequestToObtainAllThePostByTitle(){
-        jsonData = FileUtils.getStringFromJsonFile(jsonDataPath, queryGetByTitleEndpoint);
+        jsonData = FileUtils.getStringFromJsonFile(JSON_DATA_PATH, QUERY_GET_BY_TITLE_ENDPOINT);
         String title = "title=" + jsonData.get("title").toString();
         title = title.replace("\"","");
-        String path = String.format(getPostsInformationByQuery, title);
+        String path = String.format(GET_POSTS_INFORMATION_BY_QUERY, title);
         response = RestAssured.given().get(path);
     }
 
