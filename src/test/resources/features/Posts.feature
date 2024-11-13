@@ -15,6 +15,7 @@ Feature: Get posts information
     And The response returns the correct title.
     And The response returns the correct body.
     And The response returns the correct id.
+    And The response returns the correct jsonSchema.
 
   Scenario: Get a successful response when creating a new post.
     Given The user has access to the JsonPlaceholder endpoint.

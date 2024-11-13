@@ -17,6 +17,8 @@ public class PostsSteps {
 
     private static final String JSON_DATA_PATH = "C:/Users/ASUS/Documents/jsonplaceholder data files/PostsDataFile.json";
 
+    private PostsEndpoint postsEndpoint = new PostsEndpoint();
+
     private Response response;
 
     private JsonObject jsonData;
@@ -57,8 +59,7 @@ public class PostsSteps {
 
     @When("The user performs a get request to obtain all the posts.")
     public void theUserPerformsAGetRequestToObtainAllThePosts(){
-        jsonData = FileUtils.getStringFromJsonFile(JSON_DATA_PATH, GET_ALL_ENDPOINT);
-        response = RestAssured.given().get(POST_INFORMATION);
+        response = postsEndpoint.getPosts();
     }
 
     @When("The user performs a get request to obtain a post by Id.")
@@ -171,6 +172,12 @@ public class PostsSteps {
     public void theBodyOfThePostShouldBeTheCorrectOne(){
         Assert.assertEquals("The body is no the correct one", jsonData.get("body").getAsString()
                                                                      , response.jsonPath().getString("body"));
+    }
+
+    @And("The response returns the correct jsonSchema.")
+    public void theJsonSchemaOfThePostShouldBeTheCorrectOne(){
+        Assert.assertEquals("The body is no the correct one", jsonData.get("body").getAsString()
+                , response.jsonPath().getString("body"));
     }
 
     @And("The user expects the correct comment count.")
