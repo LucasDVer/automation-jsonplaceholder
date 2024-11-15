@@ -3,8 +3,8 @@ package jsonplaceholder.steps;
 import com.common.framework.api.BaseAPI;
 import com.common.framework.utils.FileUtils;
 import com.google.gson.JsonObject;
-import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import jsonplaceholder.configuration.PropertiesProvider;
 
 public class PostsEndpoint extends BaseAPI {
 
@@ -16,7 +16,7 @@ public class PostsEndpoint extends BaseAPI {
 
     @Override
     protected void loadBaseUrl() {
-        setBaseUrl("https://jsonplaceholder.typicode.com/");
+        setBaseUrl(PropertiesProvider.getPropertyValue("jsonplaceholder.api.url"));
     }
 
     @Override

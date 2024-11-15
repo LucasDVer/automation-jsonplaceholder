@@ -1,5 +1,6 @@
 package jsonplaceholder.steps;
 
+import com.common.framework.api.APIContext;
 import com.common.framework.utils.FileUtils;
 import com.google.gson.JsonObject;
 import io.cucumber.java.en.And;
@@ -18,6 +19,8 @@ public class PostsSteps {
     private static final String JSON_DATA_PATH = "C:/Users/ASUS/Documents/jsonplaceholder data files/PostsDataFile.json";
 
     private PostsEndpoint postsEndpoint = new PostsEndpoint();
+
+    private APIContext apiContext = new APIContext();
 
     private Response response;
 
@@ -59,7 +62,7 @@ public class PostsSteps {
 
     @When("The user performs a get request to obtain all the posts.")
     public void theUserPerformsAGetRequestToObtainAllThePosts(){
-        response = postsEndpoint.getPosts();
+        apiContext.setResponse(postsEndpoint.getPosts());
     }
 
     @When("The user performs a get request to obtain a post by Id.")
@@ -140,13 +143,13 @@ public class PostsSteps {
     @Then("The response returns the correct status code.")
     public void theStatusCodeShouldBeTheCorrectOne(){
         Assert.assertEquals("The status code is not the correct one.",jsonData.get("statusCode").getAsInt()
-                                                                             , response.statusCode());
+                                                                             , apiContext.getResponse().statusCode());
     }
 
     @And("The response returns the correct count.")
     public void theNumberOfPostsShouldBeTheCorrectOne(){
         Assert.assertEquals("The count post is not the correct one.",jsonData.get("countPosts").getAsInt()
-                                                                            , response.as(List.class).size());
+                                                                            , apiContext.getResponse().as(List.class).size());
 
     }
 
